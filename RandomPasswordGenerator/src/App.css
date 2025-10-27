@@ -1,0 +1,23 @@
+/* App.css
+
+  Educational comments: This project uses Tailwind for the majority of styling.
+  The purpose of this file is to show a few small, non-Tailwind helpers and
+  provide inline comments so you can learn how the responsive layout was adjusted.
+
+  Notes:
+  - Most responsiveness is handled by Tailwind utility classes used in JSX.
+  - We add only a tiny helper here to ensure the range input and text behave
+    more consistently across browsers.
+*/
+
+/* Make sure range input doesn't overflow its container on very small screens */
+input[type="range"] {
+  max-width: 100%;
+}
+
+/* Allow the readonly text input to truncate with an ellipsis on overflow */
+input[readonly] {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

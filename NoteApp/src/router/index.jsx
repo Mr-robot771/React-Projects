@@ -7,7 +7,7 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />} />
-      <Route path="/new-note" element={<NewNote />} />
+      <Route path="/note" element={<NewNote />} />
     </Routes>
   );
 };

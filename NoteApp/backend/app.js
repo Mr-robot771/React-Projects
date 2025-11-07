@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import userRoutes from "./src/routes/userRoutes.js";
+import noteRoutes from "./src/routes/noteRoutes.js";
+import userRoutes from "./src/routes/userRoutes.js"
 
 const app = express();
 // Enable CORS before any routes
@@ -11,6 +12,7 @@ app.use(
   })
 );
 app.use(express.json());
-app.use("/note", userRoutes);
+app.use("/note", noteRoutes);
+app.use("/user",userRoutes)
 
 export default app;

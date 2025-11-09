@@ -51,14 +51,14 @@ const Userform = () => {
 
   return (
     <>
-      <div>
+      <div className="flex flex-col justify-center items-center">
         <div className="text-center my-4">
           <h1 className="text-4xl font-bold tracking-tight">{title.header}</h1>
           <p className="text-lg tracking-tight text-gray-600">
             {title.caption}
           </p>
         </div>
-        <div className="flex bg-gray-100 justify-around mx-5 py-2 rounded-[2rem]">
+        <div className="flex bg-gray-100 justify-around mx-5 py-2 rounded-[2rem] lg:w-xl">
           <button
             className={`${
               toggle ? "bg-gray-100" : "bg-white"

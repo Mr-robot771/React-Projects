@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import api from "../services/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Loader from "./loader";
 
 const schema = z.object({
   email: z.email("Invalid email").nonempty("Email is required"),
@@ -43,7 +44,7 @@ const Login = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-3 w-full"
+      className="flex flex-col gap-3 w-full lg:max-w-xl"
     >
       <div className="flex flex-col gap-2">
         <label htmlFor="email" className="text-lg font-medium">
@@ -75,11 +76,13 @@ const Login = () => {
       <button
         className="bg-blue-600 p-3 rounded-[2rem] text-white font-medium text-[1.1rem] cursor-pointer hover:bg-blue-600/90 active:bg-blue"
         type="submit"
+        disabled={isSubmitting}
       >
-        Login
+        {isSubmitting ? "Submitting" : "Login"}
       </button>
     </form>
   );
 };
 
 export default Login;
+

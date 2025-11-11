@@ -1,6 +1,7 @@
 import React from "react";
 import api from "../services/axiosInstance.js";
 import { formatDistanceToNow } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const Cards = ({
   id,
@@ -21,16 +22,24 @@ const Cards = ({
 
   const timeAgo = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
 
+  const navigate = useNavigate();
+
   return (
     <div className="my-5 mx-5 border border-gray-300 py-4 px-4 flex flex-col gap-5 rounded-2xl inset-shadow-xl">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold tracking-tighter ">{title}</h1>
-        <button
-          className="bg-red-500 px-2 text-white rounded-md cursor-pointer hover:bg-red-500/80 active:bg-red-500 font-medium"
-          onClick={() => handleDelete(id)} // Pass the id to handleDelete
-        >
-          Delete
-        </button>
+        <div className="flex gap-4">
+          {" "}
+          <button className="bg-sky-500 px-2 text-white rounded-md cursor-pointer hover:bg-sky-500/80 active:bg-sky-500/80 lg:active:bg-sky-500 font-medium" onClick={()=>{navigate("/create-note",{state:{noteId:id,title,description,category}})}}>
+            Edit
+          </button>
+          <button
+            className="bg-red-500 px-2 text-white rounded-md cursor-pointer hover:bg-red-500/80 active:bg-red-500 font-medium"
+            onClick={() => handleDelete(id)} // Pass the id to handleDelete
+          >
+            Delete
+          </button>
+        </div>
       </div>
 
       <div className="w-auto max-w-full">

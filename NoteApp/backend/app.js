@@ -7,7 +7,8 @@ const app = express();
 // Enable CORS before any routes
 app.use(
   cors({
-    origin: "https://projectsushil.vercel.app",
+    //"https://projectsushil.vercel.app" ||
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );

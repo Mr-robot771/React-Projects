@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "../services/axiosInstance.js";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const schema = z.object({
   title: z.string().nonempty("Title is required*"),
@@ -16,6 +16,22 @@ const schema = z.object({
 
 const NewNote = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const {
+    noteId,
+    title: initialTitle,
+    description: initialDescription,
+    category: initialCategory,
+  } = location.state || {};
+  const isEditing = !!noteId; //true if in edit mode
+  // debug logs to help track why page might render blank
+  console.log("NewNote mounted", {
+    isEditing,
+    noteId,
+    initialTitle,
+    initialDescription,
+    initialCategory,
+  });
 
   const {
     register,
@@ -26,7 +42,23 @@ const NewNote = () => {
     resolver: zodResolver(schema),
     mode: "onTouched",
     reValidateMode: "onChange",
+    defaultValues: {
+      title: initialTitle || "",
+      description: initialDescription || "",
+      category: initialCategory || "",
+    },
   });
+
+  // If we navigated here with location.state after mount, ensure form is populated
+  useEffect(() => {
+    if (isEditing) {
+      reset({
+        title: initialTitle || "",
+        description: initialDescription || "",
+        category: initialCategory || "",
+      });
+    }
+  }, [isEditing, initialTitle, initialDescription, initialCategory, reset]);
 
   async function onSubmit(data) {
     try {
@@ -38,11 +70,23 @@ const NewNote = () => {
         return;
       }
 
-      console.log("Submitting note:", { ...data, user: userId });
-      const response = await api.post("/note", { ...data, user: userId });
-      console.log("Note creation response:", response.data);
+      let response;
+      if (isEditing) {
+        //patch request for edit
+        response = await api.patch(`/note/${noteId}`, {
+          title: data.title,
+          description: data.description,
+          category: data.category,
+        });
+        toast.success("Note updated successfully!");
+      } else {
+        //post request for create
+        response = await api.post("/note", { ...data, user: userId });
+        console.log("Note creation response:", response.data);
 
-      toast.success("Note added successfully!");
+        toast.success("Note added successfully!");
+      }
+
       reset({
         title: "",
         description: "",
@@ -50,13 +94,10 @@ const NewNote = () => {
       });
       navigate("/noteApp"); // Navigate back to notes list
     } catch (error) {
-      console.error(
-        "Note creation error:",
-        error.response?.data || error.message
-      );
+      console.error("error:", error.response?.data || error.message);
       toast.error(
         error.response?.data?.message ||
-          "Failed to create note. Please try again."
+          "Failed to save note. Please try again."
       );
     }
   }
@@ -65,7 +106,7 @@ const NewNote = () => {
     <div className="mx-10 lg:mx-30 my-5">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
         <h1 className="font-bold text-4xl tracking-tight text-center">
-          Create New Note
+          {isEditing ? "Edit Note" : "Create New Note"}
         </h1>
         <div>
           <label
@@ -138,7 +179,7 @@ const NewNote = () => {
             className="bg-blue-700 text-white w-full rounded-xl font-medium text-2xl py-2 cursor-pointer hover:bg-blue-700/90 active:bg-blue-700"
             type="submit"
           >
-            Save Note
+            {isEditing ? "Update Note" : "Save Note"}
           </button>
           <button
             className="bg-gray-300 w-full rounded-xl font-medium text-2xl py-2 cursor-pointer hover:bg-gray-200 active:bg-gray-300"

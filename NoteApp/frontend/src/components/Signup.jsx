@@ -7,10 +7,10 @@ import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { VscGithubInverted } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
-
+import { RotatingLines } from "react-loader-spinner";
 
 const schema = z.object({
-  email: z.email("Invalid email").nonempty("Email is required!"),
+  email: z.email("Invalid email!").nonempty("Email is required!"),
   password: z
     .string()
     .nonempty("Password is required!")
@@ -39,8 +39,7 @@ const Signup = () => {
         email: "",
         password: "",
       });
-      navigate("/?form=login")
-
+      navigate("/?form=login");
     } catch (error) {
       // Show the specific error message from the backend
       if (error.response?.status === 409) {
@@ -51,7 +50,6 @@ const Signup = () => {
       console.error("Signup error:", error.response?.data);
     }
   }
-
 
   return (
     <form
@@ -69,6 +67,11 @@ const Signup = () => {
           placeholder="Enter your email"
           autoComplete="email"
         />
+        {errors.email && (
+          <p className="text-red-500 font-[475] tracking-tighter">
+            {errors.email.message}
+          </p>
+        )}
       </div>
       <div className="flex flex-col gap-2 mb-5">
         <label htmlFor="password" className="text-lg font-medium">
@@ -81,12 +84,35 @@ const Signup = () => {
           placeholder="Enter your password"
           autoComplete="new-password"
         />
+        {errors.password && (
+          <p className="text-red-500 font-[475] tracking-tighter">
+            {errors.password.message}
+          </p>
+        )}
       </div>
       <button
         className="bg-blue-600 p-3 rounded-[2rem] text-white font-medium text-[1.1rem] cursor-pointer hover:bg-blue-600/90 active:bg-blue-600"
         type="submit"
+        disabled={isSubmitting}
       >
-        Sign Up
+        {isSubmitting ? (
+          <div className="flex justify-center items-center">
+            {" "}
+            <RotatingLines
+              visible={true}
+              height="26"
+              width="26"
+              color="white"
+              strokeWidth="5"
+              animationDuration="0.75"
+              ariaLabel="rotating-lines-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          </div>
+        ) : (
+          "Sign Up"
+        )}
       </button>
       <div className="flex items-center gap-4 my-4">
         <hr className="flex-1 text-gray-400" />

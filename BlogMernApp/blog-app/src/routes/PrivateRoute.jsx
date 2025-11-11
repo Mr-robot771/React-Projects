@@ -1,12 +1,13 @@
-import React from 'react'
-import PrivateRoute from './PrivateRoute';
+import React from "react";
+import { Outlet } from "react-router-dom";
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ allowedRoles }) => {
+  //we will make this later in the course
   return (
     <div>
-      PrivateRoute
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default PrivateRoute
+export default PrivateRoute;

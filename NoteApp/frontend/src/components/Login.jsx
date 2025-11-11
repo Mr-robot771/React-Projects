@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import api from "../services/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loader from "./loader";
+import { RotatingLines } from "react-loader-spinner";
 
 const schema = z.object({
-  email: z.email("Invalid email").nonempty("Email is required"),
+  email: z.email("Invalid email!").nonempty("Email is required"),
   password: z
     .string()
     .nonempty("Password is required")
@@ -57,6 +57,11 @@ const Login = () => {
           placeholder="Enter your email"
           autoComplete="email"
         />
+        {errors.email && (
+          <p className="text-red-500 font-[475] tracking-tighter">
+            {errors.email.message}
+          </p>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="password" className="text-lg font-medium">
@@ -69,6 +74,11 @@ const Login = () => {
           placeholder="Enter your password"
           autoComplete="current-password"
         />
+        {errors.password && (
+          <p className="text-red-500 font-[475] tracking-tighter">
+            {errors.password.message}
+          </p>
+        )}
         <p className="text-blue-600 font-medium tracking-tight self-end">
           Forget Password?
         </p>
@@ -78,11 +88,27 @@ const Login = () => {
         type="submit"
         disabled={isSubmitting}
       >
-        {isSubmitting ? "Submitting" : "Login"}
+        {isSubmitting ? (
+          <div className="flex justify-center items-center">
+            {" "}
+            <RotatingLines
+              visible={true}
+              height="26"
+              width="26"
+              color="white"
+              strokeWidth="5"
+              animationDuration="0.75"
+              ariaLabel="rotating-lines-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+          </div>
+        ) : (
+          "Login"
+        )}
       </button>
     </form>
   );
 };
 
 export default Login;
-

@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const SearchPosts = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div>SearchPosts</div>;
+};
 
-export default SearchPosts
+export default SearchPosts;

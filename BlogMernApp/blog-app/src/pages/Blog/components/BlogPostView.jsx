@@ -1,5 +1,5 @@
 import React from 'react'
-import BlogPostView from './BlogPostView';
+
 
 const BlogPostView = () => {
   return (

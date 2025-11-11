@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 export const connectDB = async () => {
   try {
     await mongoose.connect(
-      process.env.MONGO_URI || "//127.0.0.1:27017/noteApp"
+      process.env.MONGO_URI
     );
     console.log("mongodb connected");
   } catch (error) {

@@ -7,7 +7,7 @@ const app = express();
 // Enable CORS before any routes
 app.use(
   cors({
-    origin: "https://react-projects-din6.vercel.app",
+    origin: "https://projectsushil.vercel.app",
     credentials: true,
   })
 );

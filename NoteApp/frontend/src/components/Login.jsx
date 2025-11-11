@@ -8,10 +8,10 @@ import { toast } from "react-toastify";
 import { RotatingLines } from "react-loader-spinner";
 
 const schema = z.object({
-  email: z.email("Invalid email!").nonempty("Email is required"),
+  email: z.email("Invalid email!").nonempty("Email is required!"),
   password: z
     .string()
-    .nonempty("Password is required")
+    .nonempty("Password is required!")
     .min(8, "Password should be at least 8 characters long"),
 });
 
